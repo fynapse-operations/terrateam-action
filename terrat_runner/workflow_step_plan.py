@@ -64,7 +64,8 @@ def _store_plan_terrateam(work_token, api_base_url, dir_path, workspace, plan_pa
             )
             plan_file_name = "tfplan.tfplan"
             outputs = []
-            for dirpath, _, filenames in os.walk(plan_path):
+            walk_path = plan_path
+            for dirpath, _, filenames in os.walk(walk_path):
                 if plan_file_name in filenames:
                     # Calculate the relative path from the starting root_dir
                     relative_path = os.path.relpath(dirpath, plan_path)
