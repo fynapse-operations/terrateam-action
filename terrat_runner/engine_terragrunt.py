@@ -40,6 +40,22 @@ class TerragruntEngine(engine_tf.Engine):
     def diff_json(self, state, config):
         return None
 
+    def _plan_stack(self, state, config):
+        (proc, stdout, stderr) = cmd.run_with_output(
+            state,
+            {
+                'cmd': [
+                           self.tf_cmd,
+                           'plan',
+                           '--all'
+                           '-detailed-exitcode',
+                           '-out-dir',
+                           '${TERRATEAM_PLAN_FILE}'
+                       ] + config.get('extra_args', [])
+            }
+        )
+        return (proc.returncode in [0, 2], proc.returncode == 2, stdout, stderr)
+
     def plan(self, state, config):
         logging.info("Planning from Terragrunt 🤖")
         logging.info("Unit is %s", is_unit(state))
@@ -49,20 +65,7 @@ class TerragruntEngine(engine_tf.Engine):
 
         else:
             logging.info("stack")
-            (proc, stdout, stderr) = cmd.run_with_output(
-                state,
-                {
-                    'cmd': [
-                        self.tf_cmd,
-                        'plan',
-                        '--all'
-                        '-detailed-exitcode',
-                        '-out-dir',
-                        '${TERRATEAM_PLAN_FILE}'
-                    ] + config.get('extra_args', [])
-                }
-            )
-            return (proc.returncode in [0, 2], proc.returncode == 2, stdout, stderr)
+            return self._plan_stack(state, config)
 
     def outputs(self, state, config):
         if is_unit(state):
