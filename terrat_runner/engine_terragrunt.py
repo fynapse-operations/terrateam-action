@@ -7,6 +7,7 @@ import engine_tf
 
 def is_unit(state):
     terragrunt_hcl_file = os.path.join(state.working_dir, 'terragrunt.hcl')
+    logging.info("Path is %s", terragrunt_hcl_file)
     return os.path.exists(terragrunt_hcl_file) and os.path.isfile(terragrunt_hcl_file)
 
 class TerragruntEngine(engine_tf.Engine):
