@@ -33,26 +33,59 @@ def _store_plan_data(plan_data, work_token, api_base_url, dir_path, workspace, h
 
 def _store_plan_terrateam(work_token, api_base_url, dir_path, workspace, plan_path, has_changes):
     try:
-        with open(plan_path, 'rb') as f:
-            plan_data_raw = f.read()
-            plan_data_encoded = base64.b64encode(plan_data_raw).decode('utf-8')
-            plan_data = {
-                'data': plan_data_encoded,
-                'method': 'terrateam',
-                'version': 1
-            }
+        if os.path.isfile(plan_path):
+            with open(plan_path, 'rb') as f:
+                plan_data_raw = f.read()
+                plan_data_encoded = base64.b64encode(plan_data_raw).decode('utf-8')
+                plan_data = {
+                    'data': plan_data_encoded,
+                    'method': 'terrateam',
+                    'version': 1
+                }
 
-        logging.debug('PLAN : STORE_PLAN : dir_path=%s : workspace=%s : md5=%s',
-                      dir_path,
-                      workspace,
-                      hashlib.md5(plan_data_raw).hexdigest())
+            logging.debug('PLAN : STORE_PLAN : dir_path=%s : workspace=%s : md5=%s',
+                          dir_path,
+                          workspace,
+                          hashlib.md5(plan_data_raw).hexdigest())
 
-        return _store_plan_data(plan_data,
-                                work_token,
-                                api_base_url,
-                                dir_path,
-                                workspace,
-                                has_changes)
+            return _store_plan_data(plan_data,
+                                    work_token,
+                                    api_base_url,
+                                    dir_path,
+                                    workspace,
+                                    has_changes)
+        else:
+            plan_file_name = "tfplan.tfplan"
+            outputs = []
+            for dirpath, _, filenames in os.walk(plan_path):
+                if plan_file_name in filenames:
+                    # Calculate the relative path from the starting root_dir
+                    relative_path = os.path.relpath(dirpath, plan_path)
+
+                    with open(os.path.join(dirpath, plan_file_name), 'rb') as f:
+                        plan_data_raw = f.read()
+                        plan_data_encoded = base64.b64encode(plan_data_raw).decode('utf-8')
+                        plan_data = {
+                            'data': plan_data_encoded,
+                            'method': 'terrateam',
+                            'version': 1
+                        }
+                    plan_path = os.path.join(dir_path, relative_path)
+                    logging.debug('PLAN : STORE_PLAN : dir_path=%s : workspace=%s : md5=%s',
+                                  plan_path,
+                                  workspace,
+                                  hashlib.md5(plan_data_raw).hexdigest())
+
+                    outputs.append(_store_plan_data(plan_data,
+                                                    work_token,
+                                                    api_base_url,
+                                                    plan_path,
+                                                    workspace,
+                                                    has_changes)
+                                   )
+
+            return all([output[0] for output in outputs]), "\n".join([output[1] for output in outputs])
+
     except Exception as exn:
         logging.exception('Failed')
         return (False, str(exn))
