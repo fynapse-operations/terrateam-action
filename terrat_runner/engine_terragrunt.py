@@ -40,7 +40,7 @@ class TerragruntEngine(engine_tf.Engine):
         return None
 
     def plan(self, state, config):
-        logging.info("Planning from terraform")
+        logging.info("Planning from Terragrunt 🤖")
         if is_unit(state):
             return super().plan(state, config)
 
