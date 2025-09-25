@@ -55,13 +55,6 @@ def _store_plan_terrateam(work_token, api_base_url, dir_path, workspace, plan_pa
                                     workspace,
                                     has_changes)
         else:
-            logging.info("plan path %s, is dir %s", plan_path, os.path.isdir(plan_path))
-            logging.info(
-                "plan path %s, is dir %s, contents %s",
-                plan_path,
-                os.path.isdir(plan_path),
-                os.listdir(plan_path)
-            )
             plan_file_name = "tfplan.tfplan"
             outputs = []
             walk_path = plan_path
@@ -78,13 +71,6 @@ def _store_plan_terrateam(work_token, api_base_url, dir_path, workspace, plan_pa
                             'method': 'terrateam',
                             'version': 1
                         }
-                    logging.debug("tfplan path %s, plan path %s, workdir path %s", dirpath, plan_path, dir_path)
-                    logging.debug(
-                        "tfplan relative path %s, plan relative path %s, workdir relative path %s",
-                        relative_path,
-                        os.path.relpath(dirpath, dir_path),
-                        os.path.relpath(dirpath, plan_path)
-                    )
                     plan_path = os.path.join(dir_path, relative_path)
                     logging.debug('PLAN : STORE_PLAN : dir_path=%s : workspace=%s : md5=%s',
                                   plan_path,
