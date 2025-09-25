@@ -30,8 +30,8 @@ class TerragruntEngine(engine_tf.Engine):
                     'cmd': [
                                self.tf_cmd,
                                'show',
-                               '--all'
-                               '-out-dir',
+                               '--all',
+                               '--out-dir',
                                '${TERRATEAM_PLAN_FILE}'
                            ]
                 }
@@ -71,7 +71,7 @@ class TerragruntEngine(engine_tf.Engine):
             (proc, stdout, stderr) = cmd.run_with_output(
                 state,
                 {
-                    'cmd': [self.tf_cmd, 'stack' 'output', '--format', 'json']
+                    'cmd': [self.tf_cmd, 'stack', 'output', '--format', 'json']
                 })
 
             return (proc.returncode == 0, stdout, stderr)
