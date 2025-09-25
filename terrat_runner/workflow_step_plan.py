@@ -55,6 +55,13 @@ def _store_plan_terrateam(work_token, api_base_url, dir_path, workspace, plan_pa
                                     workspace,
                                     has_changes)
         else:
+            logging.info("plan path %s, is dir %s", plan_path, os.path.isdir(plan_path))
+            logging.info(
+                "plan path %s, is dir %s, contents %s",
+                plan_path,
+                os.path.isdir(plan_path),
+                os.listdir(plan_path)
+            )
             plan_file_name = "tfplan.tfplan"
             outputs = []
             for dirpath, _, filenames in os.walk(plan_path):
