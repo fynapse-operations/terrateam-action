@@ -10,7 +10,7 @@ def is_unit(state):
     logging.info("Path is %s, it exists %s, and is file %s", terragrunt_hcl_file, os.path.exists(terragrunt_hcl_file), os.path.isfile(terragrunt_hcl_file))
     return os.path.exists(terragrunt_hcl_file) and os.path.isfile(terragrunt_hcl_file)
 
-class Engine(engine_tf.Engine):
+class TerragruntEngine(engine_tf.Engine):
     def __init__(self, name='terragrunt', tf_cmd='terragrunt'):
         super().__init__(name, tf_cmd)
 
