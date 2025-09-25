@@ -42,10 +42,13 @@ class TerragruntEngine(engine_tf.Engine):
 
     def plan(self, state, config):
         logging.info("Planning from Terragrunt 🤖")
+        logging.info("Unit is %s", is_unit(state))
         if is_unit(state):
+            logging.info("Unit")
             return super().plan(state, config)
 
         else:
+            logging.info("stack")
             (proc, stdout, stderr) = cmd.run_with_output(
                 state,
                 {
