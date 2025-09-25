@@ -1,4 +1,5 @@
 import cmd
+import logging
 import os
 
 import engine_tf
@@ -39,6 +40,7 @@ class TerragruntEngine(engine_tf.Engine):
         return None
 
     def plan(self, state, config):
+        logging.info("Planning from terraform")
         if is_unit(state):
             return super().plan(state, config)
 
