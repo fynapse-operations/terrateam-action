@@ -57,7 +57,7 @@ class Engine(engine_tf.Engine):
                         'plan',
                         '--all',
                         '-detailed-exitcode',
-                        '-out-dir',
+                        '--out-dir',
                         '${TERRATEAM_PLAN_FILE}'
                     ] + config.get('extra_args', [])
                 }
