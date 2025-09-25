@@ -70,7 +70,7 @@ def _store_plan_terrateam(work_token, api_base_url, dir_path, workspace, plan_pa
                             'method': 'terrateam',
                             'version': 1
                         }
-                    logging.debug("tfplan path %s, plan path %s, workdir path %", dirpath, plan_path, dir_path)
+                    logging.debug("tfplan path %s, plan path %s, workdir path %s", dirpath, plan_path, dir_path)
                     logging.debug(
                         "tfplan relative path %s, plan relative path %s, workdir relative path %s",
                         relative_path,
