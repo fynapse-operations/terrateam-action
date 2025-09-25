@@ -71,17 +71,16 @@ def _store_plan_terrateam(work_token, api_base_url, dir_path, workspace, plan_pa
                             'method': 'terrateam',
                             'version': 1
                         }
-                    plan_path = os.path.join(dir_path, relative_path)
                     logging.debug('PLAN : STORE_PLAN : dir_path=%s : workspace=%s : md5=%s',
-                                  plan_path,
-                                  workspace,
+                                  dir_path,
+                                  relative_path,
                                   hashlib.md5(plan_data_raw).hexdigest())
 
                     outputs.append(_store_plan_data(plan_data,
                                                     work_token,
                                                     api_base_url,
-                                                    plan_path,
-                                                    workspace,
+                                                    dir_path,
+                                                    relative_path,
                                                     has_changes)
                                    )
 
