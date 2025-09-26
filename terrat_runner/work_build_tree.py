@@ -79,12 +79,11 @@ def run(state):
             if proc.returncode == 0:
                 try:
                     tree = {}
-                    if tree_builder['file']:
-                        with open('data.json', 'r') as file:
-                            file_content = json.load(file)
-                            tree = _cleanup(state.env['TERRATEAM_ROOT'], file_content)
-                    else:
-                        tree = _cleanup(state.env['TERRATEAM_ROOT'], json.loads(stdout))
+                    with open('files.json', 'r') as file:
+                        file_content = json.load(file)
+                        tree = _cleanup(state.env['TERRATEAM_ROOT'], file_content)
+                    # else:
+                    #     tree = _cleanup(state.env['TERRATEAM_ROOT'], json.loads(stdout))
                     requests_retry.put(state.api_base_url + '/v1/work-manifests/' + state.work_token,
                                        json={'files': tree})
                 except json.JSONDecodeError as exn:
