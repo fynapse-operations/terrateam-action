@@ -78,6 +78,7 @@ def run(state):
                 })
             if proc.returncode == 0:
                 try:
+                    logging.info("%s", stdout)
                     tree = _cleanup(state.env['TERRATEAM_ROOT'], json.loads(stdout))
                     requests_retry.put(state.api_base_url + '/v1/work-manifests/' + state.work_token,
                                        json={'files': tree})
