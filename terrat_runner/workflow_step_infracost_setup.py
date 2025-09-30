@@ -92,10 +92,12 @@ def _configure_infracost(state, config):
 def _create_base_infracost(state, config, infracost_dir, infracost_json):
     current_branch = _checkout_base(state)
     try:
-        infracost_config_yml = os.path.join(infracost_dir, 'config.yml')
+        infracost_config_yml = os.path.join(state.working_dir, 'infracost.yml')
+        if not os.path.exists(infracost_config_yml):
+            infracost_config_yml = os.path.join(infracost_dir, 'config.yml')
 
-        infracost.create_infracost_yml(infracost_config_yml, state.work_manifest['base_dirspaces'])
-        logging.info(state.work_manifest['base_dirspaces'])
+            infracost.create_infracost_yml(infracost_config_yml, state.work_manifest['base_dirspaces'])
+
         _run_retry(state,
                    ['infracost',
                     'breakdown',
@@ -122,7 +124,6 @@ def run(state, config):
     prev_infracost = os.path.join(infracost_dir, 'infracost-prev.json')
     curr_infracost = os.path.join(infracost_dir, 'infracost.json')
     diff_infracost = os.path.join(infracost_dir, 'infracost-diff.json')
-    infracost_config_yml = os.path.join(infracost_dir, 'config.yml')
 
     try:
         logging.info('INFRACOST : SETUP')
@@ -130,7 +131,11 @@ def run(state, config):
 
         _create_base_infracost(state, config, infracost_dir, prev_infracost)
 
-        infracost.create_infracost_yml(infracost_config_yml, state.work_manifest['dirspaces'])
+        infracost_config_yml = os.path.join(state.working_dir, 'infracost.yml')
+        if not os.path.exists(infracost_config_yml):
+            infracost_config_yml = os.path.join(infracost_dir, 'config.yml')
+
+            infracost.create_infracost_yml(infracost_config_yml, state.work_manifest['dirspaces'])
 
         logging.info('INFRACOST : CONFIG')
 
