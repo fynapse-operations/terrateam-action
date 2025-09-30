@@ -95,7 +95,7 @@ def _create_base_infracost(state, config, infracost_dir, infracost_json):
         infracost_config_yml = os.path.join(infracost_dir, 'config.yml')
 
         infracost.create_infracost_yml(infracost_config_yml, state.work_manifest['base_dirspaces'])
-
+        logging.info(state.work_manifest['base_dirspaces'])
         _run_retry(state,
                    ['infracost',
                     'breakdown',
